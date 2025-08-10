@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Monthly Expenses Tracker</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 30px;
+      background: #f0f4f8;
+      color: #333;
+    }
+
+    h1 {
+      color: #2c3e50;
+    }
+
+    input, button {
+      padding: 10px;
+      margin: 5px 0;
+      width: 100%;
+      max-width: 300px;
+      font-size: 16px;
+      display: block;
+    }
+
+    button {
+      background-color: #3498db;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #2980b9;
+    }
+
+    #expensesList {
+      margin-top: 20px;
+    }
+
+    .expense-item {
+      background: white;
+      padding: 10px;
+      border-radius: 5px;
+      margin-bottom: 10px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+
+    #total {
+      font-weight: bold;
+      margin-top: 15px;
+      font-size: 18px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Monthly Expenses Tracker</h1>
+
+  <input type="text" id="category" placeholder="Expense Category (e.g. Rent)" />
+  <input type="number" id="amount" placeholder="Amount (e.g. 1000)" />
+  <button id="addBtn">Add Expense</button>
+
+  <div id="expensesList"></div>
+  <div id="total">Total: $0.00</div>
+
+  <script>
+    const addBtn = document.getElementById("addBtn");
+    const categoryInput = document.getElementById("category");
+    const amountInput = document.getElementById("amount");
+    const expensesList = document.getElementById("expensesList");
+    const totalDiv = document.getElementById("total");
+
+    let expenses = [];
+
+    addBtn.addEventListener("click", () => {
+      const category = categoryInput.value.trim();
+      const amount = parseFloat(amountInput.value);
+
+      if (!category || isNaN(amount) || amount <= 0) {
+        alert("Please enter a valid category and a positive amount.");
+        return;
+      }
+
+      expenses.push({ category, amount });
+      updateExpenses();
+
+      categoryInput.value = "";
+      amountInput.value = "";
+    });
+
+    function updateExpenses() {
+      expensesList.innerHTML = "";
+      let total = 0;
+
+      expenses.forEach(exp => {
+        const item = document.createElement("div");
+        item.className = "expense-item";
+        item.textContent = `${exp.category}: $${exp.amount.toFixed(2)}`;
+        expensesList.appendChild(item);
+        total += exp.amount;
+      });
+
+      totalDiv.textContent = `Total: $${total.toFixed(2)}`;
+    }
+  </script>
+</body>
+</html>
